@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  inference-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hospital-readmission-api
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_ENGINE=sqlite
+      - PORT=8000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hospital-readmission-dashboard
+    command: ["streamlit", "run", "dashboard/app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://inference-api:8000
+    depends_on:
+      - inference-api
+    restart: unless-stopped

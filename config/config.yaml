@@ -1,0 +1,34 @@
+project:
+  name: "Hospital Readmission Analytics and Prediction"
+  version: "1.0.0"
+  environment: "development"
+
+database:
+  engine: "sqlite"  # 'sqlite' or 'postgresql'
+  sqlite_path: "data/healthcare_mart.db"
+  postgresql:
+    host: "localhost"
+    port: 5432
+    database: "healthcare_analytics"
+    user: "postgres"
+    password: "postgres"
+    schema: "public"
+
+paths:
+  raw_dir: "data/raw"
+  staging_dir: "data/staging"
+  cleaned_dir: "data/cleaned"
+  rejected_dir: "data/rejected"
+  logs_dir: "logs"
+  dashboard_dir: "dashboard"
+
+data_source:
+  name: "UCI Diabetes 130-US Hospitals (1999-2008)"
+  url: "https://archive.ics.uci.edu/static/public/296/diabetes+130-us+hospitals+for+years+1999-2008.zip"
+  raw_encounter_file: "diabetic_data.csv"
+  raw_mapping_file: "IDS_mapping.csv"
+
+validation:
+  min_time_in_hospital: 1
+  max_time_in_hospital: 14
+  hospice_expired_discharge_ids: [11, 13, 14, 19, 20, 21]
